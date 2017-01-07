@@ -1,0 +1,49 @@
+<% include ../header.ejs %>
+<% stt = 1 %>
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-10 col-md-offset-1">
+            <table class="table table-hover table-stripped">
+                <thead>
+                <tr>
+                    <th class="text-center">STT</th>
+                    <th class="text-center">ID</th>
+                    <th class="text-center">Title</th>
+                    <th class="text-center">Category</th>
+                    <th class="text-center">Description</th>
+                    <th class="text-center">Image</th>
+                    <th class="text-center">Created at</th>
+                    <th colspan="2" class="text-center">
+                        <button class="btn btn-success" type="button"><a href="/posts/add">Add Post</a>
+                        </button>
+                    </th>
+                </tr>
+                </thead>
+                <tbody>
+                <% posts.forEach(function (post) { %>
+                <tr id="<%=post._id%>">
+                    <td class="text-center"><%= stt %></td>
+                    <td class="text-center"><%= post._id %></td>
+                    <td class="text-center"><%= post.title %></td>
+                    <td class="text-center"><%= post.category %></td>
+                    <td class="text-center"><%= post.description %></td>
+                    <td class="text-center">
+                        <img src="/uploads/<%=post.image%>" alt="<%=post.title%>" class="img-responsive thumbnail">
+                    </td>
+                    <td class="text-center"><%= moment(post.created_at).format('hh:mm a DD/MM/YYYY') %></td>
+                    <td class="text-center">
+                        <button class="btn btn-warning" type="button"><a href="/posts/edit/<%= post._id %>">Edit</a>
+                        </button>
+                    </td>
+                    <td class="text-center">
+                        <button class="btn btn-danger remove-post" id-delete="<%=post._id%>" csrf="<%=csrfToken%>" type="button"><a>Remove</a>
+                        </button>
+                    </td>
+                </tr>
+                <% stt++});%>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

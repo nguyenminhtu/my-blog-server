@@ -1,0 +1,52 @@
+<% include ../header.ejs %>
+<% stt = 1 %>
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-10 col-md-offset-1">
+            <table class="table table-hover table-stripped">
+                <thead>
+                <tr>
+                    <th class="text-center">STT</th>
+                    <th class="text-center">ID</th>
+                    <th class="text-center">Full name</th>
+                    <th class="text-center">Username</th>
+                    <th class="text-center">Email</th>
+                    <th class="text-center">Level</th>
+                    <th class="text-center">Joined date</th>
+                    <th class="text-center">
+                        Manage
+                    </th>
+                </tr>
+                </thead>
+                <tbody>
+                <% users.forEach(function (user) { %>
+                    <tr id="<%=user._id%>">
+                        <td class="text-center"><%= stt %></td>
+                        <td class="text-center"><%= user._id %></td>
+                        <td class="text-center"><%= user.fullname %></td>
+                        <td class="text-center"><%= user.username %></td>
+                        <td class="text-center"><%= user.email %></td>
+                        <td class="text-center">
+                            <% if(user.level === 0){ %>
+                                <span class="text-danger">Admin</span>
+                            <%}else{%>
+                                <span class="text-success">User</span>
+                            <%}%>
+                        </td>
+                        <td class="text-center"><%= moment(user.created_at).format('hh:mm a DD/MM/YYYY') %></td>
+                        <td class="text-center">
+                            <button class="btn btn-danger remove-user"
+                                    <%if(user.level === 0){%>
+                                        disabled
+                                    <%}%>
+                                    id-delete="<%=user._id%>" csrf="<%=csrfToken%>" type="button"><a>Remove</a>
+                            </button>
+                        </td>
+                    </tr>
+                <% stt++});%>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

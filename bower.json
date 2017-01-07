@@ -1,0 +1,20 @@
+{
+  "name": "server",
+  "description": "",
+  "main": "app.js",
+  "authors": [
+    "Nguyen Tu <tuunguyen2795@gmail.com>"
+  ],
+  "license": "MIT",
+  "homepage": "",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "bootstrap": "^3.3.7"
+  }
+}

@@ -1,0 +1,41 @@
+<% include ../header.ejs %>
+<% stt = 1 %>
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-10 col-md-offset-1">
+            <table class="table table-hover table-stripped">
+                <thead>
+                <tr>
+                    <th class="text-center">STT</th>
+                    <th class="text-center">ID</th>
+                    <th class="text-center">Name</th>
+                    <th class="text-center">Created at</th>
+                    <th colspan="2" class="text-center">
+                        <button class="btn btn-success" type="button"><a href="/categories/add">Add Category</a>
+                        </button>
+                    </th>
+                </tr>
+                </thead>
+                <tbody>
+                <% categories.forEach(function (cate) { %>
+                    <tr id="<%=cate._id%>">
+                        <td class="text-center"><%= stt %></td>
+                        <td class="text-center"><%= cate._id %></td>
+                        <td class="text-center"><%= cate.name %></td>
+                        <td class="text-center"><%= moment(cate.created_at).format('hh:mm a DD/MM/YYYY') %></td>
+                        <td class="text-center">
+                            <button class="btn btn-warning" type="button"><a href="/categories/edit/<%= cate._id %>">Edit</a>
+                            </button>
+                        </td>
+                        <td class="text-center">
+                            <button class="btn btn-danger remove-cate" id-delete="<%=cate._id%>" csrf="<%=csrfToken%>" type="button"><a>Remove</a>
+                            </button>
+                        </td>
+                    </tr>
+                <% stt++});%>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
