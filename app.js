@@ -35,13 +35,13 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(cookieParser());
 
+app.use(express.static(path.join(__dirname, 'public')));
+
 app.use(function(req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");
     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
     next();
 });
-
-app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(flash());
 app.use(session({
@@ -67,22 +67,22 @@ app.get('*', function (req, res, next) {
 });
 
 
+app.get('/public/uploads/:image', function (req, res) {
+    res.sendFile(__dirname + '/public/uploads/'+req.params.image);
+});
+
 //api router
 app.use('/api/v1/users', apiUsers);
 app.use('/api/v1/posts', apiPosts);
+
+
 app.use('/api/v1/categories', apiCategories);
-
-
 //server route
 app.use('/users', users);
 app.use('/posts', posts);
 app.use('/categories', categories);
-app.use('/', index);
 
-app.get('/public/uploads/:image', function (req, res) {
-    console.log(req.params.image);
-    res.sendFile(__dirname + '/public/uploads/'+req.params.image);
-});
+app.use('/', index);
 
 app.all('/*', function (req, res, next) {
     res.header("Access-Control-Allow-Origin", "http://localhost:8080");
