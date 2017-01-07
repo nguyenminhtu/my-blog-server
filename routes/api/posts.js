@@ -10,7 +10,7 @@ router.get('/', function (req, res) {
 });
 
 router.get('/:id', function (req, res) {
-    Post.findOne({_id: id}, function (err, post) {
+    Post.findOne({_id: req.params.id}, function (err, post) {
         if (err) {
             res.json(err);
         } else {
