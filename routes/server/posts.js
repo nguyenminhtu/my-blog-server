@@ -46,10 +46,14 @@ router.post('/add', upload.single('image'), function (req, res) {
             created_at: new Date()
         });
 
+        console.log(post);
+
         post.save(function (err, result) {
             if(err) {
+                console.log('loi roi');
                 console.log(err);
             } else {
+                console.log('vao dc day roi');
                 res.redirect('/posts');
             }
         });
