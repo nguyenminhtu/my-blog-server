@@ -1,0 +1,38 @@
+<% include ../header.ejs %>
+<% stt = 1 %>
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-10 col-md-offset-1">
+            <table class="table table-hover table-stripped">
+                <thead>
+                <tr>
+                    <th class="text-center">STT</th>
+                    <th class="text-center">ID</th>
+                    <th class="text-center">Post</th>
+                    <th class="text-center">User</th>
+                    <th class="text-center">Content</th>
+                    <th class="text-center">Created at</th>
+                    <th class="text-center">Manage</th>
+                </tr>
+                </thead>
+                <tbody>
+                <% comments.forEach(function (comment) { %>
+                    <tr id="<%=comment._id%>">
+                        <td class="text-center"><%= stt %></td>
+                        <td class="text-center"><%= comment._id %></td>
+                        <td class="text-center"><%= comment.post_title %></td>
+                        <td class="text-center"><%= comment.username %></td>
+                        <td class="text-center"><%= comment.content %></td>
+                        <td class="text-center"><%= moment(comment.created_at).format('hh:mm a DD/MM/YYYY') %></td>
+                        <td class="text-center">
+                            <button class="btn btn-danger remove-comment" id-delete="<%=comment._id%>" csrf="<%=csrfToken%>" type="button"><a>Remove</a>
+                            </button>
+                        </td>
+                    </tr>
+                <% stt++});%>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

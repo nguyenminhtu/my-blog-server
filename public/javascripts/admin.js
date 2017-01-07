@@ -47,4 +47,20 @@ $(document).ready(function () {
             });
         }
     });
+    $(".remove-comment").click(function () {
+        if(confirm("Are u sure want to delete this comment ?")) {
+            var id = $(this).attr('id-delete');
+            var csrf = $(this).attr('csrf');
+            $.ajax({
+                url: '/comments/delete/'+id,
+                type: "DELETE",
+                data: {_csrf: csrf},
+                success: function (data) {
+                    if(data === 'ok') {
+                        $("tr#"+id).remove();
+                    }
+                }
+            });
+        }
+    });
 });

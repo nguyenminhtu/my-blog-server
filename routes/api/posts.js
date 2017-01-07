@@ -11,11 +11,13 @@ router.get('/', function (req, res) {
 
 router.get('/:id', function (req, res) {
     Post.findOne({_id: req.params.id}, function (err, post) {
-        if (err) {
-            res.json(err);
-        } else {
-            res.json(post);
-        }
+        Comment.find({ post: req.params.id }).sort('-created_at').exec(function (err, comments) {
+            if(err) {
+                res.json({ message: "Error when get data from server !" });
+            } else {
+                res.json({ post: post, comments: comments });
+            }
+        });
     });
 });
 

@@ -16,11 +16,13 @@ var index = require('./routes/server/index');
 var users = require('./routes/server/users');
 var posts = require('./routes/server/posts');
 var categories = require('./routes/server/categories');
+var comments = require('./routes/server/comments');
 
 //api route
 var apiUsers = require('./routes/api/users');
 var apiPosts = require('./routes/api/posts');
 var apiCategories = require('./routes/api/categories');
+var apiComments = require('./routes/api/comments');
 
 var app = express();
 
@@ -71,17 +73,19 @@ app.get('/public/uploads/:image', function (req, res) {
     res.sendFile(__dirname + '/public/uploads/'+req.params.image);
 });
 
+
 //api router
 app.use('/api/v1/users', apiUsers);
 app.use('/api/v1/posts', apiPosts);
-
-
 app.use('/api/v1/categories', apiCategories);
+app.use('/api/v1/comments', apiComments);
+
+
 //server route
 app.use('/users', users);
 app.use('/posts', posts);
 app.use('/categories', categories);
-
+app.use('/comments', comments);
 app.use('/', index);
 
 app.all('/*', function (req, res, next) {

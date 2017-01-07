@@ -12,7 +12,7 @@ router.get('/', function (req, res) {
 
 router.get('/:id', function (req, res) {
     Category.findOne({_id: req.params.id}, function (err, category) {
-        Post.find({category: category.name}, function (err, posts) {
+        Post.find({category: req.params.id}, function (err, posts) {
             res.json({ cate: category.name, posts: posts });
         });
     });

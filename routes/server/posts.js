@@ -20,6 +20,7 @@ var storage = multer.diskStorage({
 var upload = multer({ storage: storage });
 
 Post = require('../../models/post');
+Category = require('../../models/category');
 
 router.get('/', ensureAuthenticated, function (req, res) {
     Post.find().sort('-created_at').exec(function (err, posts) {
@@ -34,21 +35,24 @@ router.get('/add', ensureAuthenticated, function (req, res) {
 });
 
 router.post('/add', upload.single('image'), function (req, res) {
-    var post = new Post({
-        title: req.body.title,
-        category: req.body.category,
-        description: req.body.description,
-        image: req.file.originalname,
-        content: req.body.content,
-        created_at: new Date()
-    });
+    Category.findOne({ _id: req.body.category }, function (err, cate) {
+        var post = new Post({
+            title: req.body.title,
+            category: req.body.category,
+            category_name: cate.name,
+            description: req.body.description,
+            image: req.file.originalname,
+            content: req.body.content,
+            created_at: new Date()
+        });
 
-    post.save(function (err, result) {
-        if(err) {
-            console.log(err);
-        } else {
-            res.redirect('/posts');
-        }
+        post.save(function (err, result) {
+            if(err) {
+                console.log(err);
+            } else {
+                res.redirect('/posts');
+            }
+        });
     });
 });
 
@@ -65,22 +69,24 @@ router.post('/edit/:id', upload.single('image'), function (req, res) {
     if(req.file) {
         image = req.file.originalname;
         fs.unlink('./public/uploads/'+req.body.old_image, function (err, result) {
-
+            console.log(result);
         });
     }else{
         image = req.body.old_image;
     }
 
-    Post.findOneAndUpdate({ _id: req.params.id },
-        { $set: { title: req.body.title, category: req.body.category, description: req.body.description, image: image, content: req.body.content } },
-        { safe: true, upsert: true },
-        function (err, result) {
-            if(err) {
-                console.log(err);
-            }else{
-                res.redirect('/posts');
-            }
-        });
+    Category.findOne({ _id: req.body.category }, function (err, cate) {
+        Post.findOneAndUpdate({ _id: req.params.id },
+            { $set: { title: req.body.title, category: req.body.category, category_name: cate.name, description: req.body.description, image: image, content: req.body.content } },
+            { safe: true, upsert: true },
+            function (err, result) {
+                if(err) {
+                    console.log(err);
+                }else{
+                    res.redirect('/posts');
+                }
+            });
+    });
 });
 
 router.delete('/delete/:id', function (req, res) {

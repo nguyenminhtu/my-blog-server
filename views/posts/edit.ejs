@@ -14,8 +14,8 @@
                     <label for="">Category: </label>
                     <select name="category" class="form-control">
                         <% cates.forEach(function(cate){ %>
-                        <option value="<%= cate.name %>"
-                            <%if(post.category === cate.name){%>
+                        <option value="<%= cate._id %>"
+                            <%if(post.category_name === cate.name){%>
                                 selected
                             <%}%>
                         ><%= cate.name %></option>
