@@ -4,6 +4,7 @@ var jwt = require('jwt-simple');
 const JWT_SECRET = 'tudeptrai';
 
 var Comment = require('../../models/comment');
+var User = require('../../models/user');
 
 router.post('/add', function (req, res) {
     var token = req.body.token;
@@ -21,6 +22,19 @@ router.post('/add', function (req, res) {
     comment.save(function (err, result) {
         if(err) {
             res.json({ message: "Error when post comment !" });
+        } else {
+            res.json({ message: "ok" });
+        }
+    });
+});
+
+router.post('/remove', function (req, res) {
+    var token = req.body.token;
+    var user = jwt.decode(token, JWT_SECRET);
+
+    Comment.findOneAndRemove({ _id: req.body.comment_id }, function (err, result) {
+        if(err) {
+            res.json({ message: err });
         } else {
             res.json({ message: "ok" });
         }
