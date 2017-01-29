@@ -21,6 +21,7 @@ var upload = multer({ storage: storage });
 
 Post = require('../../models/post');
 Category = require('../../models/category');
+Comment = require('../../models/comment');
 
 router.get('/', ensureAuthenticated, function (req, res) {
     Post.find().sort('-created_at').exec(function (err, posts) {
@@ -68,12 +69,12 @@ router.post('/edit/:id', upload.single('image'), function (req, res) {
     var image;
     if(req.file) {
         image = req.file.originalname;
-        // fs.unlink('./public/uploads/'+req.body.old_image, function (err) {
-        //     if (err) {
-        //         return console.log("Error is: " + err);
-        //     }
-        //     console.log("Deleted image !");
-        // });
+        fs.unlink('./public/uploads/'+req.body.old_image, function (err) {
+            if (err) {
+                return console.log("Error is: " + err);
+            }
+            console.log("Deleted image !");
+        });
     }else{
         image = req.body.old_image;
     }
@@ -98,12 +99,15 @@ router.delete('/delete/:id', function (req, res) {
             if(err) {
                 console.log(err);
             }else{
-                // fs.unlink('./public/uploads/'+post.image, function (err) {
-                //     if(err) {
-                //         return console.log(err);
-                //     }
-                //     console.log("Delete image successfully !");
-                // });
+                fs.unlink('./public/uploads/'+post.image, function (err) {
+                    if(err) {
+                        return console.log(err);
+                    }
+                    console.log("Delete image successfully !");
+                });
+                Comment.remove({ post: req.params.id }, function(err, result) {
+                    console.log(result);
+                });
                 res.send('ok');
             }
         });
