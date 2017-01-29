@@ -46,14 +46,10 @@ router.post('/add', upload.single('image'), function (req, res) {
             created_at: new Date()
         });
 
-        console.log(post);
-
         post.save(function (err, result) {
             if(err) {
-                console.log('loi roi');
                 console.log(err);
             } else {
-                console.log('vao dc day roi');
                 res.redirect('/posts');
             }
         });
@@ -72,9 +68,12 @@ router.post('/edit/:id', upload.single('image'), function (req, res) {
     var image;
     if(req.file) {
         image = req.file.originalname;
-        fs.unlink('./public/uploads/'+req.body.old_image, function (err, result) {
-            console.log(result);
-        });
+        // fs.unlink('./public/uploads/'+req.body.old_image, function (err) {
+        //     if (err) {
+        //         return console.log("Error is: " + err);
+        //     }
+        //     console.log("Deleted image !");
+        // });
     }else{
         image = req.body.old_image;
     }
@@ -99,9 +98,13 @@ router.delete('/delete/:id', function (req, res) {
             if(err) {
                 console.log(err);
             }else{
-                fs.unlink('./public/uploads/'+post.image, function (err, result) {
-                    res.send('ok');
-                })
+                // fs.unlink('./public/uploads/'+post.image, function (err) {
+                //     if(err) {
+                //         return console.log(err);
+                //     }
+                //     console.log("Delete image successfully !");
+                // });
+                res.send('ok');
             }
         });
     });
